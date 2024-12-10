@@ -1,0 +1,131 @@
+/* General Styling */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url('background-image.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #333;/* Global Styles */
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7fc;
+  }
+  
+  .navbar {
+    margin-bottom: 20px;
+  }
+  
+  #bookingForm {
+    background-color: #ffffff;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  
+  .form-label {
+    font-weight: 600;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2rem;
+  }
+  
+  .container {
+    max-width: 800px;
+  }
+  
+  /* Input Styling for Flatpickr */
+  .flatpickr-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    font-size: 1rem;
+    background-color: #ffffff;
+  }
+  
+}
+
+/* Container Styling */
+.container {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 30px;
+  margin: 30px auto;
+  max-width: 900px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Header */
+h1, h2 {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+  background-color: #007bff;
+  color: white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+}
+
+.dashboard-card .icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.dashboard-card .text {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.dashboard-card .action a {
+  text-decoration: none;
+  color: white;
+}
+
+/* Forms */
+form {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+  font-weight: bold;
+}
+
+form .form-select, form .btn {
+  border-radius: 30px;
+}
+
+form .btn {
+  margin-top: 10px;
+}
+
+/* Contact Section */
+#contact p {
+  margin: 10px 0;
+  font-size: 16px;
+}
