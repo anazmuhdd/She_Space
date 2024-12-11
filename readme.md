@@ -23,7 +23,7 @@ Replace `<repository_url>` with the URL of this GitHub repository.
 ### 2. Navigate to the Project Directory
 
 ```bash
-cd <project_directory>
+cd <project_directory>/backend
 ```
 
 Replace `<project_directory>` with the name of the cloned repository.
