@@ -11,7 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
     dateFormat: "Y-m-d H:i", // Format to include date and time
     minDate: "today", // Prevent past dates from being selected
   });
-
+  document.getElementById("logoutBtn").addEventListener("click", function (event) {
+    event.preventDefault(); // Prevent the default anchor behavior
+    const confirmLogout = confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+      window.location.href = "index.html"; // Redirect to login page
+    }
+  });
+  
   // Set up event listeners for dynamic options
   const roomType = document.getElementById("roomType");
   const roomOrBed = document.getElementById("roomOrBed");
