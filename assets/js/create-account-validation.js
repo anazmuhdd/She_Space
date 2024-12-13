@@ -1,4 +1,4 @@
-let userData = {};  // Store data temporarily
+let userData = {}; // Store data temporarily
 
 function showAccountDetails() {
   const fullName = document.getElementById('full-name').value;
@@ -37,7 +37,7 @@ function validateForm(event) {
   }
 
   userData.password = password;
-  userData.address = document.getElementById('address').value || '';
+  userData.address = document.getElementById('address')?.value || '';
 
   registerUser(userData);
 }
@@ -64,4 +64,5 @@ async function registerUser(formData) {
   }
 }
 
+// Attach event listener for form submission
 document.getElementById('create-account-form').addEventListener('submit', validateForm);
