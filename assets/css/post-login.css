@@ -73,6 +73,13 @@ h1, h2 {
   margin-bottom: 20px;
 }
 
+
+/* Dashboard Container */
+.dashboard-container {
+  max-width: 700px; /* Adjust to desired width */
+  margin: 0 auto;   /* Center the dashboard container */
+  padding: 20px;    /* Add some padding for spacing */
+}
 /* Dashboard Cards */
 .dashboard-card {
   background-color: #007bff;
