@@ -1,14 +1,9 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 
-// Register User
+// Controller for user registration
 const registerUser = async (req, res) => {
   const { name, dob, address, phone, email, password } = req.body;
-
-  // Validate required fields
-  if (!name || !dob || !phone || !email || !password) {
-    return res.status(400).json({ message: 'Please fill all required fields' });
-  }
 
   try {
     // Check if user already exists
@@ -22,7 +17,7 @@ const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create user
-    const user = await User.create({
+    const user = new User({
       name,
       dob,
       address,
@@ -31,15 +26,38 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
-    // Return success response
-    if (user) {
-      res.status(201).json({ message: 'User registered successfully', userId: user._id });
-    } else {
-      res.status(400).json({ message: 'Invalid user data' });
-    }
+    await user.save();
+
+    res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
-module.exports = { registerUser };
+// Controller for user login
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Compare passwords
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid password' });
+    }
+
+    // Successful login
+    res.status(200).json({ message: 'Login successful' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+module.exports = { registerUser, loginUser };
