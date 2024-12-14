@@ -1,49 +1,29 @@
-let userData = {};  // Store data temporarily
+let userData = {}; // Store data temporarily
 
-function showAccountDetails() {
+function validateForm(event) {
+  event.preventDefault(); // Prevent default form submission
+
+  // Get personal details from the form
   const fullName = document.getElementById('full-name').value;
   const dob = document.getElementById('dob').value;
   const phone = document.getElementById('phone').value;
   const email = document.getElementById('email').value;
+  const address = document.getElementById('address').value;
 
-  // Check if personal details are filled in
+  // Validate required fields
   if (!fullName || !dob || !phone || !email) {
-    alert("Please fill in all mandatory fields in the Personal Details section.");
+    alert("Please fill in all mandatory fields.");
     return;
   }
 
-  // Store personal details in the userData object
-  userData.name = fullName;
-  userData.dob = dob;
-  userData.phone = phone;
-  userData.email = email;
-
-  // Hide personal details section and show account details (password) section
-  document.getElementById('personal-details').style.display = 'none';
-  document.getElementById('account-details').style.display = 'block';
-}
-
-function showPersonalDetails() {
-  document.getElementById('account-details').style.display = 'none';
-  document.getElementById('personal-details').style.display = 'block';
-}
-
-function validateForm(event) {
-  event.preventDefault();  // Prevent default form submission
-
-  const password = document.getElementById('password').value;
-  const repassword = document.getElementById('repassword').value;
-
-  // Check if passwords match (only validate if the password field is filled)
-  if (password && password !== repassword) {
-    alert("Passwords do not match!");
-    return false;
-  }
-
-  // If passwords are changed, add them to the userData object
-  if (password) {
-    userData.password = password;
-  }
+  // Store user data
+  userData = {
+    name: fullName,
+    dob: dob,
+    phone: phone,
+    email: email,
+    address: address,
+  };
 
   // Call the API to update the user profile
   updateUserProfile(userData);
