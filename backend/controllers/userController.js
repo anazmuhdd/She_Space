@@ -60,4 +60,53 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+// Controller for updating user profile
+const updateUserProfile = async (req, res) => {
+  const { name, dob, address, phone, email } = req.body;
+
+  try {
+    // Find the user by email and update the fields
+    const user = await User.findOneAndUpdate(
+      { email },
+      { name, dob, address, phone },
+      { new: true } // Return the updated document
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'Profile updated successfully', user });
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Controller for fetching user details by email
+const getUserProfile = async (req, res) => {
+  const { email } = req.params; // Get email from URL parameter
+
+  try {
+    // Find user by email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Send the user data (excluding password for security)
+    res.status(200).json({
+      name: user.name,
+      dob: user.dob,
+      address: user.address,
+      phone: user.phone,
+      email: user.email,
+    });
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+module.exports = { registerUser, loginUser, updateUserProfile, getUserProfile };
