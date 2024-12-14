@@ -38,6 +38,7 @@ document.querySelector("#login-form").addEventListener("submit", async function 
     const data = await response.json();
 
     if (response.ok) {
+      localStorage.setItem('email', email);
       showMessage(data.message);
       setTimeout(() => {
         window.location.href = "post-login.html";
@@ -50,3 +51,4 @@ document.querySelector("#login-form").addEventListener("submit", async function 
     showMessage("An error occurred. Please try again later.");
   }
 });
+
