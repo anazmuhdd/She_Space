@@ -8,5 +8,3 @@ router.put('/updateProfile', updateUserProfile);
 router.get('/user/:email', getUserProfile);
 
 module.exports = router;
-
-

@@ -15,45 +15,54 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('dob').value = formattedDob;
 
       document.getElementById('phone').value = userData.phone;
-      document.getElementById('email').value = userData.email;
+      document.getElementById('email').value = userData.email; // Disabled field
       document.getElementById('address').value = userData.address || '';
     } else {
-      alert(userData.message || 'Failed to fetch user details');
+      alert(userData.message || 'Failed to load user data');
     }
   } catch (error) {
     console.error('Error fetching user data:', error);
-    alert('Error fetching user details. Please try again later.');
+    alert('Failed to load user details.');
   }
 });
 
-// Handle profile update submission
-document.getElementById('edit-profile-form').addEventListener('submit', async (event) => {
+// Handle the form submission to update user profile
+async function updateProfile(event) {
   event.preventDefault();
 
   const updatedData = {
     name: document.getElementById('full-name').value,
     dob: document.getElementById('dob').value,
     phone: document.getElementById('phone').value,
-    email: document.getElementById('email').value,
     address: document.getElementById('address').value,
+    email: localStorage.getItem('email'),
   };
 
   try {
+    const authToken = localStorage.getItem('authToken');
+    
     const response = await fetch('http://localhost:5000/api/updateProfile', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`, // Include token for authentication
+      },
       body: JSON.stringify(updatedData),
     });
 
     const data = await response.json();
 
     if (response.ok) {
-      alert(data.message);
+      alert('Profile updated successfully');
+      window.location.href = 'post-login.html'; // Redirect to post-login page
     } else {
-      alert(data.message || 'Error updating profile');
+      alert(data.message || 'Update failed');
     }
   } catch (error) {
     console.error('Error updating profile:', error);
-    alert('Error updating profile. Please try again later.');
+    alert('Failed to update profile.');
   }
-});
+}
+
+// Attach event listener to the form
+document.getElementById('edit-profile-form').addEventListener('submit', updateProfile);
