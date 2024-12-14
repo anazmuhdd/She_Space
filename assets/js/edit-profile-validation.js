@@ -1,78 +1,68 @@
-let userData = {};  // Store data temporarily
-
-function showAccountDetails() {
-  const fullName = document.getElementById('full-name').value;
-  const dob = document.getElementById('dob').value;
-  const phone = document.getElementById('phone').value;
-  const email = document.getElementById('email').value;
-
-  // Check if personal details are filled in
-  if (!fullName || !dob || !phone || !email) {
-    alert("Please fill in all mandatory fields in the Personal Details section.");
-    return;
-  }
-
-  // Store personal details in the userData object
-  userData.name = fullName;
-  userData.dob = dob;
-  userData.phone = phone;
-  userData.email = email;
-
-  // Hide personal details section and show account details (password) section
-  document.getElementById('personal-details').style.display = 'none';
-  document.getElementById('account-details').style.display = 'block';
-}
-
-function showPersonalDetails() {
-  document.getElementById('account-details').style.display = 'none';
-  document.getElementById('personal-details').style.display = 'block';
-}
-
-function validateForm(event) {
-  event.preventDefault();  // Prevent default form submission
-
-  const password = document.getElementById('password').value;
-  const repassword = document.getElementById('repassword').value;
-
-  // Check if passwords match (only validate if the password field is filled)
-  if (password && password !== repassword) {
-    alert("Passwords do not match!");
-    return false;
-  }
-
-  // If passwords are changed, add them to the userData object
-  if (password) {
-    userData.password = password;
-  }
-
-  // Call the API to update the user profile
-  updateUserProfile(userData);
-}
-
-async function updateUserProfile(formData) {
+// Auto-populate user details on page load
+document.addEventListener('DOMContentLoaded', async () => {
   try {
+    const email = localStorage.getItem('email'); // Retrieve user email from localStorage
+    const response = await fetch(`http://localhost:5000/api/user/${email}`);
+    const userData = await response.json();
+
+    if (response.ok) {
+      // Populate user details into form fields
+      document.getElementById('full-name').value = userData.name;
+
+      // Convert the dob from backend format to yyyy-MM-dd
+      const dob = new Date(userData.dob); // Assuming the backend returns dob in ISO 8601 format
+      const formattedDob = dob.toISOString().split('T')[0]; // Extract the yyyy-MM-dd part
+      document.getElementById('dob').value = formattedDob;
+
+      document.getElementById('phone').value = userData.phone;
+      document.getElementById('email').value = userData.email; // Disabled field
+      document.getElementById('address').value = userData.address || '';
+    } else {
+      alert(userData.message || 'Failed to load user data');
+    }
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    alert('Failed to load user details.');
+  }
+});
+
+// Handle the form submission to update user profile
+async function updateProfile(event) {
+  event.preventDefault();
+
+  const updatedData = {
+    name: document.getElementById('full-name').value,
+    dob: document.getElementById('dob').value,
+    phone: document.getElementById('phone').value,
+    address: document.getElementById('address').value,
+    email: localStorage.getItem('email'),
+  };
+
+  try {
+    const authToken = localStorage.getItem('authToken');
+    
     const response = await fetch('http://localhost:5000/api/updateProfile', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`, // Include token for authentication
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(updatedData),
     });
 
     const data = await response.json();
 
     if (response.ok) {
-      alert('Profile updated successfully!');
-      // Optionally, redirect or update the UI with new data
-      window.location.href = '../html/profile.html'; // Redirect to profile page
+      alert('Profile updated successfully');
+      window.location.href = 'post-login.html'; // Redirect to post-login page
     } else {
-      alert(data.message || 'Profile update failed');
+      alert(data.message || 'Update failed');
     }
   } catch (error) {
     console.error('Error updating profile:', error);
-    alert('Something went wrong. Please try again.');
+    alert('Failed to update profile.');
   }
 }
 
-// Attach the form submission handler
-document.getElementById('edit-profile-form').addEventListener('submit', validateForm);
+// Attach event listener to the form
+document.getElementById('edit-profile-form').addEventListener('submit', updateProfile);
