@@ -30,14 +30,14 @@
             <a class="nav-link" href="#viewBookings">View Bookings</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../html/edit-profile.html">Edit Profile</a>
+            <a class="nav-link" href="edit-profile.html">Edit Profile</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#contact">Contact</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="logoutBtn" href="index.html">Logout</a>
-          </li>
+            <a class="nav-link" id="logoutBtn" href="../html/index.html">Logout</a>
+          </li>          
         </ul>
       </div>
     </div>
@@ -47,7 +47,6 @@
   <div id="bookingForm" class="container my-5">
     <h2 class="text-center mb-4">Room Booking</h2>
     <form>
-      <!-- Check-in and Check-out Date & Time -->
       <div class="mb-3">
         <label for="checkIn" class="form-label">Check-in</label>
         <input id="checkIn" class="form-control" type="text" placeholder="Select Check-in Date & Time" readonly>
@@ -56,45 +55,54 @@
         <label for="checkOut" class="form-label">Check-out</label>
         <input id="checkOut" class="form-control" type="text" placeholder="Select Check-out Date & Time" readonly>
       </div>
-      <button type="button" class="btn btn-primary" id="showRooms">Check Availability</button>
+
+      <!-- Check Availability Button -->
+      <button id="checkAvailabilityBtn" type="button" class="btn btn-primary" disabled>Check Availability</button>
     </form>
   </div>
 
-  <!-- Popup for Available Rooms -->
-  <div id="availableRoomsPopup" class="modal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+  <!-- Pop-up for Available Rooms -->
+  <div id="availableRoomsModal" class="modal fade" tabindex="-1" aria-labelledby="availableRoomsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Available Rooms</h5>
+          <h5 class="modal-title" id="availableRoomsModalLabel">Available Rooms</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="roomType" class="form-label">Select Room Type</label>
-              <select id="roomType" class="form-select">
-                <option value="Dormitory">Dormitory</option>
-                <option value="NonAC">Non A/C</option>
-                <option value="AC">A/C</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label id="roomOrBedLabel" for="roomOrBed" class="form-label">Number of Beds/Rooms</label>
-              <select id="roomOrBed" class="form-select"></select>
-            </div>
-            <div class="mb-3">
-              <label for="rentType" class="form-label">Select Rent Type</label>
-              <select id="rentType" class="form-select">
-                <option value="Days">Days</option>
-                <option value="Hours">Hours</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="duration" class="form-label">Select Duration</label>
-              <select id="duration" class="form-select"></select>
-            </div>
-            <button type="submit" class="btn btn-primary">Book Now</button>
-          </form>
+          <h4>All Rooms</h4>
+          <ul class="list-group mb-4">
+            <li class="list-group-item">Dormitory - 8 Beds Available</li>
+            <li class="list-group-item">Non A/C - 2 Rooms Available</li>
+            <li class="list-group-item">A/C - 2 Rooms Available</li>
+          </ul>
+          
+          <!-- Room Selection Form -->
+          <div class="mb-3">
+            <label for="roomType" class="form-label">Select Room Type</label>
+            <select id="roomType" class="form-select">
+              <option value="Dormitory">Dormitory</option>
+              <option value="NonAC">Non A/C</option>
+              <option value="AC">A/C</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="roomOrBed" class="form-label">Number of Beds/Rooms</label>
+            <select id="roomOrBed" class="form-select"></select>
+          </div>
+          <div class="mb-3">
+            <label for="rentType" class="form-label">Select Rent Type</label>
+            <select id="rentType" class="form-select">
+              <option value="Days">Days</option>
+              <option value="Hours">Hours</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="duration" class="form-label">Select Duration</label>
+            <select id="duration" class="form-select"></select>
+          </div>
+
+          <button id="bookNowBtn" type="button" class="btn btn-success">Book Now</button>
         </div>
       </div>
     </div>
