@@ -54,7 +54,7 @@ async function registerUser(formData) {
 
     if (response.ok) {
       alert('User registered successfully!');
-      window.location.href = '../html/index.html';
+      window.location.href = '/shespace';
     } else {
       alert(data.message || 'Registration failed');
     }

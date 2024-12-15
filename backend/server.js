@@ -2,7 +2,11 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
+const bookingRoutes = require('./routes/booking');
 const cors = require('cors'); // Import CORS
+const path = require('path'); // Import path for serving static files
+
+
 
 // Load environment variables
 dotenv.config();
@@ -18,10 +22,27 @@ app.use(express.json());
 // Enable CORS for all origins (or specify origins as needed)
 app.use(cors());
 
-// Routes
-app.use('/api', authRoutes); // Routes with prefix "/api"
 
-// Error handling middleware for undefined routes
+app.use('/assets', express.static(path.join(__dirname, '..', 'assets')));
+app.get('/shespace', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'html', 'index.html')); 
+});
+app.get('/create-account', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'html', 'create-account.html'));
+});
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'html', 'post-login.html')); 
+});
+app.get('/edit-profile', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'html', 'edit-profile.html')); 
+});
+app.get('/staff-login', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'html', 'staff-login.html'));
+});
+app.get('', (req, res) => {
+  res.redirect('/shespace');
+});
+app.use('/api', authRoutes, bookingRoutes);
 app.use((req, res, next) => {
   res.status(404).json({ message: 'Route not found' });
 });
