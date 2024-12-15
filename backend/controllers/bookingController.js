@@ -14,15 +14,14 @@ async function checkAvailability(req, res) {
     // Fetch all bookings within the given date range
     const bookings = await Bookings.find({
       $or: [
-        { checkIn: { $lt: checkOutDate, $gte: checkInDate } },
-        { checkOut: { $gt: checkInDate, $lte: checkOutDate } },
-        { checkIn: { $lte: checkInDate }, checkOut: { $gte: checkOutDate } }
+        { check_in: { $lt: checkOutDate, $gte: checkInDate } },
+        { check_out: { $gt: checkInDate, $lte: checkOutDate } },
+        { check_in: { $lte: checkInDate }, check_out: { $gte: checkOutDate } }
       ]
     });
-
     // Count the booked rooms by type
     const bookedRoomCounts = bookings.reduce((counts, booking) => {
-      counts[booking.roomType] = (counts[booking.roomType] || 0) + booking.quantity;
+      counts[booking.type] = (counts[booking.type] || 0)
       return counts;
     }, {});
 
@@ -67,26 +66,29 @@ async function bookRoom(req, res) {
 
     // Step 1: Check availability of rooms within the specified dates
     const bookedRooms = await Bookings.find({
-      checkIn: { $lte: checkOutDate },
-      checkOut: { $gte: checkInDate }
-    }).select('roomNumbers');
+      check_in: { $lte: checkOutDate },
+      check_out: { $gte: checkInDate }
+    }).select('room_ids');
+    console.log("booked room numbers: ",bookedRooms);
 
+    const filteredbookedRooms = bookedRooms.length > 0 
+    ? [...new Set(bookedRooms.flatMap(booking => booking.room_ids))] 
+    : []; 
+    console.log("filtered booked room numbers: ",filteredbookedRooms);
     // Step 2: Get all available rooms (status: "Available" and not already booked in the date range)
     const availableRooms = await Rooms.find({
       status: 'Available',
-      roomNumber: { $nin: bookedRooms.flatMap(b => b.roomNumbers) }
-    }).limit(numRooms);
-
-    // Step 3: Check if enough rooms are available
-    if (availableRooms.length < numRooms) {
-      return res.status(400).json({ message: "Not enough available rooms." });
-    }
+      type: r_type,
+      room_id: { $nin: filteredbookedRooms }
+    });
+    console.log("availabenumbers: ",availableRooms);
 
     // Step 4: Generate a unique booking ID
     const bookingId = await generateBookingId();
 
     // Step 5: Select the room numbers from the available rooms
-    const roomNumbers = availableRooms.slice(0, numRooms).map(room => room.roomNumber);
+    const roomNumbers = availableRooms.slice(0, numRooms).map(room => room.room_id);
+    console.log("bookedNumbers:",roomNumbers );
 
     // Step 6: Create the booking record in the database
     const newBooking = new Bookings({

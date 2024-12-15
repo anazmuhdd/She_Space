@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const availableRoomsList = document.querySelector('.list-group');
     availableRoomsList.innerHTML = '';
 
-    const roomTypes = ['Dormitory', 'NonAC', 'AC'];
+    const roomTypes = ['Dormitory', 'Non A/C', 'A/C'];
 
     roomTypes.forEach(type => {
       const available = availability[type] || 0;
@@ -137,7 +137,19 @@ document.getElementById("bookNowBtn").addEventListener("click", async function(e
   const checkInDate = localStorage.getItem("checkInDate");
   const checkOutDate = localStorage.getItem("checkOutDate");
   const num_Rooms = document.getElementById("roomOrBed").value;
-  const typeroom=document.getElementById("roomType").value;
+  let typeroom=""
+  if(document.getElementById("roomType").value=="AC")
+  {
+    typeroom="A/C";  
+  }
+  else if(document.getElementById("roomType").value=="NonAC")
+  {
+    typeroom="Non A/C";
+  }
+  else
+  {
+    typeroom="Dormitory";
+  }
   console.log("the Values: ",user_Id,checkInDate,checkOutDate,num_Rooms)
 
   // Data to be sent to the backend
@@ -165,7 +177,8 @@ document.getElementById("bookNowBtn").addEventListener("click", async function(e
       if (response.ok) {
           // Successful booking
           alert("Booking successful!");
-          alert(`Booking id: ${data.bookingId}`)
+          alert(`Booking id: ${data.bookingId}
+            Booked rooms: ${data.roomNumbers}`)
       } else {
           // Error case: Display the error message
           alert(`Booking failed: ${data.message}`);

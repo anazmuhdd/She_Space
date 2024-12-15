@@ -1,0 +1,123 @@
+[
+    {
+      "booking_id": "B001",
+      "user_id": "675c09e9c4b7da6b820897d5",
+      "room_ids": ["NAC1", "NAC2"],
+      "type": "Non A/C Room",
+      "check_in": "2025-01-05T00:00:00.000Z",
+      "check_out": "2025-01-07T00:00:00.000Z",
+      "status": "Upcoming",
+      "total_cost": 100,
+      "createdAt": "2024-12-15T00:00:00.000Z",
+      "updatedAt": "2024-12-15T00:00:00.000Z"
+    },
+    {
+      "booking_id": "B002",
+      "user_id": "675c09e9c4b7da6b820897d5",
+      "room_ids": ["AC1"],
+      "type": "A/C Room",
+      "check_in": "2025-01-06T00:00:00.000Z",
+      "check_out": "2025-01-09T00:00:00.000Z",
+      "status": "Upcoming",
+      "total_cost": 75,
+      "createdAt": "2024-12-15T00:00:00.000Z",
+      "updatedAt": "2024-12-15T00:00:00.000Z"
+    },
+    {
+      "booking_id": "B003",
+      "user_id": "675c09e9c4b7da6b820897d5",
+      "room_ids": ["B1", "B2"],
+      "type": "Dormitory",
+      "check_in": "2025-01-07T00:00:00.000Z",
+      "check_out": "2025-01-10T00:00:00.000Z",
+      "status": "Upcoming",
+      "total_cost": 200,
+      "createdAt": "2024-12-15T00:00:00.000Z",
+      "updatedAt": "2024-12-15T00:00:00.000Z"
+    },
+    {
+      "booking_id": "B004",
+      "user_id": "675c09e9c4b7da6b820897d5",
+      "room_ids": ["NAC3", "NAC4", "NAC5"],
+      "type": "Non A/C Room",
+      "check_in": "2025-01-08T00:00:00.000Z",
+      "check_out": "2025-01-12T00:00:00.000Z",
+      "status": "Upcoming",
+      "total_cost": 150,
+      "createdAt": "2024-12-15T00:00:00.000Z",
+      "updatedAt": "2024-12-15T00:00:00.000Z"
+    },
+    {
+      "booking_id": "B005",
+      "user_id": "675c09e9c4b7da6b820897d5",
+      "room_ids": ["AC2", "AC3"],
+      "type": "A/C Room",
+      "check_in": "2025-01-09T00:00:00.000Z",
+      "check_out": "2025-01-13T00:00:00.000Z",
+      "status": "Upcoming",
+      "total_cost": 150,
+      "createdAt": "2024-12-15T00:00:00.000Z",
+      "updatedAt": "2024-12-15T00:00:00.000Z"
+    },
+    {
+      "booking_id": "B006",
+      "user_id": "675c0be6c69efd75fc79db31",
+      "room_ids": ["B3", "B4", "B5"],
+      "type": "Dormitory",
+      "check_in": "2025-01-10T00:00:00.000Z",
+      "check_out": "2025-01-14T00:00:00.000Z",
+      "status": "Upcoming",
+      "total_cost": 300,
+      "createdAt": "2024-12-15T00:00:00.000Z",
+      "updatedAt": "2024-12-15T00:00:00.000Z"
+    },
+    {
+      "booking_id": "B007",
+      "user_id": "675c0be6c69efd75fc79db31",
+      "room_ids": ["NAC6"],
+      "type": "Non A/C Room",
+      "check_in": "2025-01-11T00:00:00.000Z",
+      "check_out": "2025-01-15T00:00:00.000Z",
+      "status": "Upcoming",
+      "total_cost": 50,
+      "createdAt": "2024-12-15T00:00:00.000Z",
+      "updatedAt": "2024-12-15T00:00:00.000Z"
+    },
+    {
+      "booking_id": "B008",
+      "user_id": "675c0be6c69efd75fc79db31",
+      "room_ids": ["B6", "B7", "B8"],
+      "type": "Dormitory",
+      "check_in": "2025-01-12T00:00:00.000Z",
+      "check_out": "2025-01-16T00:00:00.000Z",
+      "status": "Upcoming",
+      "total_cost": 300,
+      "createdAt": "2024-12-15T00:00:00.000Z",
+      "updatedAt": "2024-12-15T00:00:00.000Z"
+    },
+    {
+      "booking_id": "B009",
+      "user_id": "675c0be6c69efd75fc79db31",
+      "room_ids": ["AC4"],
+      "type": "A/C Room",
+      "check_in": "2025-01-13T00:00:00.000Z",
+      "check_out": "2025-01-18T00:00:00.000Z",
+      "status": "Upcoming",
+      "total_cost": 75,
+      "createdAt": "2024-12-15T00:00:00.000Z",
+      "updatedAt": "2024-12-15T00:00:00.000Z"
+    },
+    {
+      "booking_id": "B010",
+      "user_id": "675c0be6c69efd75fc79db31",
+      "room_ids": ["NAC7", "NAC8"],
+      "type": "Non A/C Room",
+      "check_in": "2025-01-14T00:00:00.000Z",
+      "check_out": "2025-01-19T00:00:00.000Z",
+      "status": "Upcoming",
+      "total_cost": 100,
+      "createdAt": "2024-12-15T00:00:00.000Z",
+      "updatedAt": "2024-12-15T00:00:00.000Z"
+    }
+  ]
+  
