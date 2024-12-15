@@ -53,7 +53,10 @@ const loginUser = async (req, res) => {
     }
 
     // Successful login
-    res.status(200).json({ message: 'Login successful' });
+    res.status(200).json({
+      message: 'Login successful',
+      userId: user._id // Add the ObjectId of the user in the response
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error', error: error.message });

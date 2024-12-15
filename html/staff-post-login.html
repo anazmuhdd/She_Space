@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../assets/css/staff-post-login.css">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">SHE SPACE Staff</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#" data-section="todaysBookingsSection">
+              Today's Bookings
+              <span id="bookingBadge" class="badge bg-danger">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-section="availableRoomsSection">Available Rooms</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-section="bookingCalendarSection">Booking Calendar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-section="userDetailsSection">User Details</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="logoutBtn" href="staff-login.html">Logout</a>
+          </li> 
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sections -->
+  <div class="container">
+    <!-- Today's Bookings -->
+    <div id="todaysBookingsSection" class="active-section">
+      <h2 class="section-header">Today's Bookings</h2>
+      <ul id="todaysBookings" class="list-group">
+        <!-- Dummy bookings -->
+        <li class="list-group-item">
+          <span><strong>User:</strong> Alex Johnson</span>
+          <span><strong>Phone:</strong> +91 9876543210</span>
+          <span><strong>Room:</strong> A/C</span>
+          <span><strong>Check-in:</strong> 9:00 AM</span>
+          <span><strong>Check-out:</strong> 11:00 AM</span>
+        </li>
+        <li class="list-group-item">
+          <span><strong>User:</strong> Lisa Brown</span>
+          <span><strong>Phone:</strong> +91 9123456789</span>
+          <span><strong>Room:</strong> Non A/C</span>
+          <span><strong>Check-in:</strong> 10:00 AM</span>
+          <span><strong>Check-out:</strong> 1:00 PM</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Available Rooms -->
+    <div id="availableRoomsSection" class="hidden">
+      <h2 class="section-header">Available Rooms</h2>
+      <ul id="availableRooms" class="list-group">
+        <!-- Dummy data -->
+        <li class="list-group-item">Dormitory - 6 Beds Available</li>
+        <li class="list-group-item">Non A/C - 2 Rooms Available</li>
+        <li class="list-group-item">A/C - 2 Rooms Available</li>
+      </ul>
+    </div>
+
+    <!-- Booking Calendar -->
+    <div id="bookingCalendarSection" class="hidden">
+      <h2 class="section-header">Booking Calendar</h2>
+      <input id="calendarInput" class="form-control mb-3" type="text" placeholder="Select a date" readonly>
+      <h4 class="mb-3">Bookings for: <span id="selectedDate">None</span></h4>
+      <ul id="calendarBookings" class="list-group">
+        <!-- Booking details will appear here dynamically -->
+      </ul>
+    </div>
+
+    <!-- User Details -->
+    <div id="userDetailsSection" class="hidden">
+      <h2 class="section-header">User Details</h2>
+      <ul id="userDetails" class="list-group">
+        <!-- Dummy user data -->
+        <li class="list-group-item">Name: Alex Johnson | Phone: +91 9876543210</li>
+        <li class="list-group-item">Name: Lisa Brown | Phone: +91 9123456789</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <!-- Custom JS -->
+  <script src="../assets/js/staff-post-login.js"></script>
+</body>
+
+</html>
