@@ -54,7 +54,7 @@ async function updateProfile(event) {
 
     if (response.ok) {
       alert('Profile updated successfully');
-      window.location.href = 'post-login.html'; // Redirect to post-login page
+      window.location.href = '/dashboard'; // Redirect to post-login page
     } else {
       alert(data.message || 'Update failed');
     }

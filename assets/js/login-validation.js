@@ -39,10 +39,12 @@ document.querySelector("#login-form").addEventListener("submit", async function 
 
     if (response.ok) {
       localStorage.setItem('email', email);
+      localStorage.setItem('userId', data.userId);
+      console.log("User ID (ObjectId):", localStorage.userId);
       showMessage(data.message);
       setTimeout(() => {
-        window.location.href = "post-login.html";
-      }, 2000); // Redirect after 2 seconds
+        window.location.href = "/dashboard";  // Redirect to /dashboard after login
+      }, 5000); // Redirect after 2 seconds
     } else {
       showMessage(data.message);
     }
@@ -51,4 +53,3 @@ document.querySelector("#login-form").addEventListener("submit", async function 
     showMessage("An error occurred. Please try again later.");
   }
 });
-

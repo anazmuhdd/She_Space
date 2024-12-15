@@ -1,0 +1,280 @@
+[
+    {
+      "room_id": "B1",
+      "type": "Dormitory",
+      "dormitory_id": "D1",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B2",
+      "type": "Dormitory",
+      "dormitory_id": "D1",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B3",
+      "type": "Dormitory",
+      "dormitory_id": "D1",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B4",
+      "type": "Dormitory",
+      "dormitory_id": "D1",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B5",
+      "type": "Dormitory",
+      "dormitory_id": "D1",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B6",
+      "type": "Dormitory",
+      "dormitory_id": "D1",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B7",
+      "type": "Dormitory",
+      "dormitory_id": "D1",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B8",
+      "type": "Dormitory",
+      "dormitory_id": "D1",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+  
+
+    {
+      "room_id": "B9",
+      "type": "Dormitory",
+      "dormitory_id": "D2",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B10",
+      "type": "Dormitory",
+      "dormitory_id": "D2",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B11",
+      "type": "Dormitory",
+      "dormitory_id": "D2",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B12",
+      "type": "Dormitory",
+      "dormitory_id": "D2",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B13",
+      "type": "Dormitory",
+      "dormitory_id": "D2",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B14",
+      "type": "Dormitory",
+      "dormitory_id": "D2",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B15",
+      "type": "Dormitory",
+      "dormitory_id": "D2",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "B16",
+      "type": "Dormitory",
+      "dormitory_id": "D2",
+      "status": "Available",
+      "rent_rate": 100,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+  
+
+    {
+      "room_id": "NAC1",
+      "type": "Non A/C",
+      "status": "Available",
+      "rent_rate": 50,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "NAC2",
+      "type": "Non A/C",
+      "status": "Available",
+      "rent_rate": 50,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "NAC3",
+      "type": "Non A/C",
+      "status": "Available",
+      "rent_rate": 50,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "NAC4",
+      "type": "Non A/C",
+      "status": "Available",
+      "rent_rate": 50,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "NAC5",
+      "type": "Non A/C",
+      "status": "Available",
+      "rent_rate": 50,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "NAC6",
+      "type": "Non A/C",
+      "status": "Available",
+      "rent_rate": 50,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "NAC7",
+      "type": "Non A/C",
+      "status": "Available",
+      "rent_rate": 50,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "NAC8",
+      "type": "Non A/C",
+      "status": "Available",
+      "rent_rate": 50,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+  
+    {
+      "room_id": "AC1",
+      "type": "A/C",
+      "status": "Available",
+      "rent_rate": 75,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "AC2",
+      "type": "A/C",
+      "status": "Available",
+      "rent_rate": 75,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "AC3",
+      "type": "A/C",
+      "status": "Available",
+      "rent_rate": 75,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "AC4",
+      "type": "A/C",
+      "status": "Available",
+      "rent_rate": 75,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "AC5",
+      "type": "A/C",
+      "status": "Available",
+      "rent_rate": 75,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "AC6",
+      "type": "A/C",
+      "status": "Available",
+      "rent_rate": 75,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "AC7",
+      "type": "A/C",
+      "status": "Available",
+      "rent_rate": 75,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    },
+    {
+      "room_id": "AC8",
+      "type": "A/C",
+      "status": "Available",
+      "rent_rate": 75,
+      "createdAt": "2024-12-15T00:00:00Z",
+      "updatedAt": "2024-12-15T00:00:00Z"
+    }
+  ]
+  
