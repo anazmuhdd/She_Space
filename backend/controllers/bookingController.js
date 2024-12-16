@@ -19,11 +19,17 @@ async function checkAvailability(req, res) {
         { check_in: { $lte: checkInDate }, check_out: { $gte: checkOutDate } }
       ]
     });
+
+    console.log("bookings: ",bookings)
+    
     // Count the booked rooms by type
     const bookedRoomCounts = bookings.reduce((counts, booking) => {
-      counts[booking.type] = (counts[booking.type] || 0)
+      const normalizedType = booking.type === 'Non A/C' ? 'NonAC' : booking.type === 'A/C' ? 'AC' : booking.type;
+      counts[normalizedType] = (counts[normalizedType] || 0) + (booking.room_ids?.length || 0);
       return counts;
     }, {});
+    
+    console.log(bookedRoomCounts);
 
     // Fetch all rooms
     const rooms = await Rooms.find();
@@ -46,7 +52,7 @@ async function checkAvailability(req, res) {
 
     // Subtract booked rooms from available rooms
     availability.Dormitory -= bookedRoomCounts.Dormitory || 0;
-    availability.NonAC -= bookedRoomCounts.NonAC || 0;
+    availability.NonAC -= bookedRoomCounts.NonAC|| 0;
     availability.AC -= bookedRoomCounts.AC || 0;
 
     // Return availability information
