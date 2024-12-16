@@ -5,6 +5,7 @@ const bookingSchema = new mongoose.Schema({
   user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   room_ids: [{ type: String, }], // Array of room/bed IDs
   type: { type: String, required: true },
+  dormitory_ids: [{ type: String, }],
   check_in: { type: Date, required: true },
   check_out: { type: Date, required: true },
   status: { type: String, enum: ['Upcoming', 'Completed', 'Cancelled'], default: 'Upcoming' },
