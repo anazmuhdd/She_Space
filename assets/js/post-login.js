@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
       for (let i = 1; i <= availableQuantity; i++) {
         const optionElement = document.createElement("option");
         optionElement.value = i;
-        optionElement.textContent = `${i} ${selectedRoom === 'Dormitory' ? 'Bed(s)' : 'Room(s)'}`;
+        optionElement.textContent = `${i} ${selectedRoom === 'Dormitory' ? 'Bed(s)' : 'Bed(s)'}`;
         roomOrBedSelect.appendChild(optionElement);
       }
     });

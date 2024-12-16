@@ -34,6 +34,8 @@ async function checkAvailability(req, res) {
     // Fetch all rooms
     const rooms = await Rooms.find();
 
+    console.log(rooms);
+
     // Initialize availability counters
     const availability = {
       Dormitory: 0,
