@@ -177,8 +177,16 @@ document.getElementById("bookNowBtn").addEventListener("click", async function(e
       if (response.ok) {
           // Successful booking
           alert("Booking successful!");
-          alert(`Booking id: ${data.bookingId}
-            Booked rooms: ${data.roomNumbers}`)
+          const bookedRoomsDetails = data.rooms
+          .map(room => `room number: ${room.dormitory_id}, Bed Number: ${room.room_id}`)
+          .join('\n');
+
+  // Display the success message with booking details
+          alert(`Booking successful!
+          Booking ID: ${data.bookingId}
+          Booked Rooms:
+          ${bookedRoomsDetails}`);
+          window.location.href="/dashboard";
       } else {
           // Error case: Display the error message
           alert(`Booking failed: ${data.message}`);

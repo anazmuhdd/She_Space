@@ -88,35 +88,45 @@ async function bookRoom(req, res) {
       status: 'Available',
       type: r_type,
       room_id: { $nin: filteredbookedRooms }
-    });
+    }).select('room_id dormitory_id');
     console.log("availabenumbers: ",availableRooms);
 
     // Step 4: Generate a unique booking ID
     const bookingId = await generateBookingId();
 
     // Step 5: Select the room numbers from the available rooms
-    const roomNumbers = availableRooms.slice(0, numRooms).map(room => room.room_id);
+    const roomNumbers = availableRooms.slice(0, numRooms).map(room => ({
+      room_id: room.room_id,
+      dormitory_id: room.dormitory_id
+    }));
     console.log("bookedNumbers:",roomNumbers );
 
     // Step 6: Create the booking record in the database
     const newBooking = new Bookings({
       booking_id: bookingId,  // Make sure the field is named booking_id in the schema
       user_id: userId,        // Ensure user_id is correctly referenced
-      room_ids: roomNumbers,
+      room_ids: roomNumbers.map(room => room.room_id),
       type: r_type,
+      dormitory_id: roomNumbers.map(room => room.dormitory_id),
       check_in: checkInDate,  // Ensure check_in is passed to the schema
       check_out: checkOutDate, // Ensure check_out is passed to the schema
       status: "Upcoming"       // Set the status to "pending" for now
     });
-
+    console.log('newBooking',newBooking)
     // Save the booking in the database
     await newBooking.save();
+    
+    const roomDetails = roomNumbers.map(room => ({
+      room_id: room.room_id,
+      dormitory_id: room.dormitory_id
+    }));
 
+    console.log('roomDetails',roomDetails);
     // Step 7: Respond with booking details (Booking ID and Room Numbers)
     return res.status(200).json({
       message: "Booking successful",
       bookingId,
-      roomNumbers
+      rooms: roomDetails
     });
 
   } catch (error) {
