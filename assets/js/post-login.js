@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const availableRoomsList = document.querySelector('.list-group');
     availableRoomsList.innerHTML = '';
 
-    const roomTypes = ['Dormitory', 'Non A/C', 'A/C'];
+    const roomTypes = ['Dormitory', 'NonAC', 'AC'];
 
     roomTypes.forEach(type => {
       const available = availability[type] || 0;
