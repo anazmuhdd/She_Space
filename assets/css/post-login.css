@@ -159,3 +159,52 @@ select.form-select:focus {
     text-align: center;
   }
 }
+/* Booking Success Modal */
+#bookingSuccessModal .modal-dialog {
+  max-width: 50%;
+  margin-top: 10%;
+}
+
+#bookingSuccessModal .modal-header {
+  background-color: #28a745;
+  color: white;
+}
+
+#bookingSuccessModal .modal-title {
+  font-size: 1.5rem;
+}
+
+#bookingSuccessModal .modal-body {
+  font-size: 1.1rem;
+  padding: 30px;
+  background-color: #f4fdf2;
+  border-radius: 8px;
+}
+
+#bookingSuccessModal ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#bookingSuccessModal ul li {
+  font-size: 1.1rem;
+}
+
+#bookingSuccessModal .modal-footer {
+  justify-content: center;
+}
+
+#bookingSuccessModal .btn-close {
+  background: transparent;
+  border: none;
+  color: #000;
+}
+
+#bookingSuccessModal .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.modal-content {
+  border-radius: 10px;
+}
