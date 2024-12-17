@@ -58,23 +58,37 @@ exports.getTodaysBookings = async (req, res) => {
             check_in: { $lt: tomorrow },
             check_out: { $gte: today },
         }).populate('user_id', 'name phone email');
-        console.log('todaybookings: ',bookings);
 
-        const formattedBookings = bookings.map((booking) => ({
-            booking_id: booking.booking_id,
-            user_id: booking.user_id._id,
-            name: booking.user_id.name,
-            phone: booking.user_id.phone,
-            email: booking.user_id.email,
-            dormitory_ids: booking.dormitory_ids,
-            room_ids: booking.room_ids,
-            number_of_beds: booking.room_ids.length,
-            type: booking.type,
-        }));
-        console.log('formattedtodaybookings: ',formattedBookings);
+        if (!bookings.length) {
+            console.warn('No bookings found for today');
+            return res.status(404).json({ success: false, message: 'No bookings found for today' });
+        }
+
+        // Format the bookings
+        const formattedBookings = bookings.map((booking) => {
+            const { user_id, dormitory_ids, room_ids, type } = booking;
+            if (!user_id) {
+                console.error(`User not populated for booking_id: ${booking.booking_id}`);
+                return null; // Skip if user is not populated
+            }
+
+            return {
+                booking_id: booking.booking_id,
+                user_id: user_id._id,
+                name: user_id.name,
+                phone: user_id.phone,
+                email: user_id.email,
+                dormitory_ids,
+                room_ids,
+                number_of_beds: Array.isArray(room_ids) ? room_ids.length : 0, // Check if array
+                type,
+            };
+        }).filter(Boolean); // Remove null entries
+
+        console.log('Formatted today bookings:', formattedBookings);
         res.status(200).json({ success: true, bookings: formattedBookings });
     } catch (error) {
-        console.error(error);
+        console.error('Error fetching today\'s bookings:', error);
         res.status(500).json({ message: 'Error fetching today\'s bookings', error: error.message });
     }
 };
