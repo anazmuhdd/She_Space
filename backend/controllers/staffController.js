@@ -46,13 +46,14 @@ exports.registerStaff = async (req, res) => {
 };
 // Controller for Today's Bookings
 // Get Today's Bookings
+// Get Today's Bookings (POST)
 exports.getTodaysBookings = async (req, res) => {
     try {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
-
+        
         // Fetch bookings for the current day
         const bookings = await Bookings.find({
             check_in: { $lt: tomorrow },
@@ -60,15 +61,14 @@ exports.getTodaysBookings = async (req, res) => {
         }).populate('user_id', 'name phone email');
 
         if (!bookings.length) {
-            console.warn('No bookings found for today');
             return res.status(404).json({ success: false, message: 'No bookings found for today' });
         }
 
         // Format the bookings
         const formattedBookings = bookings.map((booking) => {
             const { user_id, dormitory_ids, room_ids, type } = booking;
+
             if (!user_id) {
-                console.error(`User not populated for booking_id: ${booking.booking_id}`);
                 return null; // Skip if user is not populated
             }
 
@@ -85,13 +85,12 @@ exports.getTodaysBookings = async (req, res) => {
             };
         }).filter(Boolean); // Remove null entries
 
-        console.log('Formatted today bookings:', formattedBookings);
         res.status(200).json({ success: true, bookings: formattedBookings });
     } catch (error) {
-        console.error('Error fetching today\'s bookings:', error);
         res.status(500).json({ message: 'Error fetching today\'s bookings', error: error.message });
     }
 };
+
 
 // Get Bookings for a Specific Date
 exports.getBookingsForDate = async (req, res) => {
@@ -133,6 +132,7 @@ exports.getBookingsForDate = async (req, res) => {
   // Controller for Booking Calendar
 // Controller for User Details
 // Get User Details
+// Get User Details (POST)
 exports.getUserDetails = async (req, res) => {
     try {
         // Fetch all users
@@ -149,8 +149,6 @@ exports.getUserDetails = async (req, res) => {
 
         res.status(200).json({ success: true, users: userDetails });
     } catch (error) {
-        console.error(error);
         res.status(500).json({ message: 'Error fetching user details', error: error.message });
     }
 };
-    
