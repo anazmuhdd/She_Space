@@ -155,9 +155,11 @@ async function generateBookingId() {
 }
 async function getUserBookings(req, res) {
   const userId = req.params.userId;
+  
 
   try {
       // Fetch bookings grouped by their status
+      console.log(userId);
       const pastBookings = await Bookings.find({
           user_id: userId,
           status: "Upcoming",
