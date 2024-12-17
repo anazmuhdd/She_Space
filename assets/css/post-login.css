@@ -31,7 +31,7 @@ body {
 
 /* Booking Form */
 form {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
@@ -136,17 +136,26 @@ select.form-select:focus {
   cursor: not-allowed;
 }
 
-/* Contact Section */
+/* Contact Section - */
 #contact {
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 10px; /* Reduced padding */
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem; 
+  max-width: 600px;
+  margin: 20px auto; 
+}
+
+#contact h2 {
+  font-size: 1.3rem;
+  margin-bottom: 10px; 
 }
 
 #contact p {
-  font-size: 1.1rem;
-  font-weight: 500;
+  font-size: 0.9rem; 
+  font-weight: 400; 
+  margin: 5px 0; 
 }
 
 /* Responsive Design */
