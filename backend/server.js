@@ -40,7 +40,7 @@ app.get('/edit-profile', (req, res) => {
 app.get('/staff-login', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'html', 'staff-login.html'));
 });
-app.get('/viewbookings', (req, res) => {
+app.get('/userviewbookings', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'html', 'view-bookings.html'));
 });
 app.get('/staff-dashboard', (req, res) => {
