@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const navbarLinks = document.querySelectorAll(".nav-link");
 
   // Utility function to fetch data from an API with improved error handling
-  async function fetchData(url, method = "GET", body = null) {
+  async function fetchData(url, method = "POST", body = null) {
       try {
           const options = {
               method,
