@@ -5,7 +5,7 @@ const { checkAvailability, bookRoom, getUserBookings, cancelBooking } = require(
 // Route to check availability
 router.post('/availability', checkAvailability);
 router.post('/book', bookRoom);
-router.get('user/:userId', getUserBookings);
+router.get('/:userId', getUserBookings);
 
 // Route to cancel a booking
 router.put('/cancel', cancelBooking);
