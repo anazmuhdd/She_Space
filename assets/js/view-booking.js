@@ -2,7 +2,7 @@
 async function fetchBookings() {
     const userId = localStorage.getItem('userId'); // Assuming user ID is stored in sessionStorage
     try {
-        const response = await fetch(`/api/${userId}`);
+        const response = await fetch(`/api/user/${userId}`);
         const data = await response.json();
         console.log('data: ',data);
         if (data.success) {
