@@ -100,7 +100,30 @@
       </div>
     </div>
   </div>
-
+  <!-- Booking Success Modal -->
+<div id="bookingSuccessModal" class="modal fade" tabindex="-1" aria-labelledby="bookingSuccessModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bookingSuccessModalLabel">Booking Successful!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h4>Booking Details</h4>
+        <p><strong>Booking ID:</strong> <span id="bookingId"></span></p>
+        <p><strong>Check-in:</strong> <span id="checkInDetails"></span></p>
+        <p><strong>Check-out:</strong> <span id="checkOutDetails"></span></p>
+        <p><strong>Booked Rooms:</strong></p>
+        <ul id="bookedRoomsList"></ul>
+        <!--<p><strong>Remaining Available Rooms:</strong></p>
+        <ul id="remainingRoomsList"></ul> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
   <!-- Contact -->
   <div id="contact" class="container my-5">
     <h2 class="text-center mb-4">Contact Details</h2>

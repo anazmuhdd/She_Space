@@ -37,8 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
   checkAvailabilityBtn.addEventListener("click", async () => {
     const checkInDate = checkInInput.value;
     const checkOutDate = checkOutInput.value;
-    localStorage.setItem('checkInDate',checkInDate);
-    localStorage.setItem('checkOutDate',checkOutDate);
+    localStorage.setItem('checkInDate', checkInDate);
+    localStorage.setItem('checkOutDate', checkOutDate);
 
     if (!checkInDate || !checkOutDate) return;
 
@@ -85,12 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Update duration options based on rent type
-  
-
   // Trigger Room/Bed and Duration dropdown updates
   roomType.dispatchEvent(new Event('change'));
-
 
   // Populate available rooms in the modal
   function populateAvailableRooms(availability) {
@@ -128,74 +124,75 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Book Now button functionality
+  document.getElementById("bookNowBtn").addEventListener("click", async function (event) {
+    event.preventDefault();
 
-document.getElementById("bookNowBtn").addEventListener("click", async function(event) {
-  event.preventDefault();
+    // Collect user input
+    const user_Id = localStorage.getItem("userId");
+    const checkInDate = localStorage.getItem("checkInDate");
+    const checkOutDate = localStorage.getItem("checkOutDate");
+    const num_Rooms = document.getElementById("roomOrBed").value;
+    let typeroom = "";
+    if (document.getElementById("roomType").value == "AC") {
+      typeroom = "A/C";
+    } else if (document.getElementById("roomType").value == "NonAC") {
+      typeroom = "Non A/C";
+    } else {
+      typeroom = "Dormitory";
+    }
 
-  // Collect user input
-  const user_Id = localStorage.getItem("userId");
-  const checkInDate = localStorage.getItem("checkInDate");
-  const checkOutDate = localStorage.getItem("checkOutDate");
-  const num_Rooms = document.getElementById("roomOrBed").value;
-  let typeroom=""
-  if(document.getElementById("roomType").value=="AC")
-  {
-    typeroom="A/C";  
-  }
-  else if(document.getElementById("roomType").value=="NonAC")
-  {
-    typeroom="Non A/C";
-  }
-  else
-  {
-    typeroom="Dormitory";
-  }
-  console.log("the Values: ",user_Id,checkInDate,checkOutDate,num_Rooms)
-
-  // Data to be sent to the backend
-  const bookingData = {
+    // Data to be sent to the backend
+    const bookingData = {
       userId: user_Id,
       r_type: typeroom,
       checkInD: checkInDate,
       checkOut: checkOutDate,
       numRooms: num_Rooms
-  };
+    };
 
-  try {
+    try {
       // Send the booking request to the backend
       const response = await fetch('/api/book', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(bookingData)
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingData)
       });
 
       // Handle the response from the backend
       const data = await response.json();
 
       if (response.ok) {
-          // Successful booking
-          alert("Booking successful!");
-          const bookedRoomsDetails = data.rooms
-          .map(room => `room number: ${room.dormitory_id}, Bed Number: ${room.room_id}`)
-          .join('\n');
+        // Hide the Available Rooms Modal if it is open
+        const availableRoomsModal = bootstrap.Modal.getInstance(document.getElementById('availableRoomsModal'));
+        availableRoomsModal.hide();
 
-  // Display the success message with booking details
-          alert(`Booking successful!
-          Booking ID: ${data.bookingId}
-          Booked Rooms:
-          ${bookedRoomsDetails}`);
-          window.location.href="/dashboard";
+        // Populate and show the booking success modal
+        const bookingId = data.bookingId;
+        const bookedRoomsDetails = data.rooms
+          .map(room => `Room Number: ${room.dormitory_id}, Bed Number: ${room.room_id}`)
+          .join('<br>');
+
+        const remainingRoomsList = Object.entries(availability).map(([roomType, available]) => {
+          return `<li>${roomType} - ${available} Beds Available</li>`;
+        }).join('');
+
+        document.getElementById("bookingId").innerText = bookingId;
+        document.getElementById("checkInDetails").innerText = checkInDate;
+        document.getElementById("checkOutDetails").innerText = checkOutDate;
+        document.getElementById("bookedRoomsList").innerHTML = bookedRoomsDetails;
+        //document.getElementById("remainingRoomsList").innerHTML = remainingRoomsList;
+
+        const successModal = new bootstrap.Modal(document.getElementById('bookingSuccessModal'));
+        successModal.show();
       } else {
-          // Error case: Display the error message
-          alert(`Booking failed: ${data.message}`);
+        alert(`Booking failed: ${data.message}`);
       }
 
-  } catch (error) {
+    } catch (error) {
       console.error("Error occurred while booking rooms:", error);
       alert("An error occurred while processing your booking. Please try again later.");
-  }
+    }
+  });
 });
-
-});// Function to display booking details (Booking ID, Room Numbers)
