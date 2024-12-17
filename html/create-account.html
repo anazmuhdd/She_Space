@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create New User - She Space</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/create-account.css">
+  <link rel="stylesheet" href="../assets/css/create-account.css">
 </head>
 <body>
   <div class="background-image">
@@ -35,27 +35,9 @@
               <label for="address" class="form-label text-light">Address</label>
               <input type="text" class="form-control" id="address" placeholder="Enter Address">
             </div>
-            <button type="button" class="btn btn-primary w-100" onclick="sendOTP()">Next</button>
+            <button type="button" class="btn btn-primary w-100" onclick="showAccountDetails()">Next</button>
+          </div>
 
-          </div>
-          <!--OTP modal-->
-          <div class="modal fade" id="otp-modal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="otpModalLabel">Enter OTP</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <input type="text" id="otp-input" class="form-control" placeholder="Enter OTP" />
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" onclick="verifyOTP()">Verify OTP</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          
           <!-- Account Details Section -->
           <div id="account-details" class="mb-4" style="display: none;">
             <div class="mb-3">
@@ -76,7 +58,7 @@
     </div>
   </div>
 
-  <script src="/assets/js/create-account-validation.js"></script>
+  <script src="../assets/js/create-account-validation.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

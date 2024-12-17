@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const bookingRoutes = require('./routes/booking');
+const staffRoutes = require('./routes/staff');
 const cors = require('cors'); // Import CORS
 const path = require('path'); // Import path for serving static files
 
@@ -39,10 +40,16 @@ app.get('/edit-profile', (req, res) => {
 app.get('/staff-login', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'html', 'staff-login.html'));
 });
+app.get('/viewbookings', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'html', 'view-bookings.html'));
+});
+app.get('/staff-dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'html', 'staff-post-login.html'));
+});
 app.get('', (req, res) => {
   res.redirect('/shespace');
 });
-app.use('/api', authRoutes, bookingRoutes);
+app.use('/api', authRoutes, bookingRoutes, staffRoutes);
 app.use((req, res, next) => {
   res.status(404).json({ message: 'Route not found' });
 });
