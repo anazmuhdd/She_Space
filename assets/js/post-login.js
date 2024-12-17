@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const available = availability[type] || 0;
       const listItem = document.createElement('li');
       listItem.classList.add('list-group-item');
-      listItem.textContent = `${type} - ${available} ${type === 'Dormitory' ? 'Beds' : 'Rooms'} Available`;
+      listItem.textContent = `${type} - ${available} ${type === 'Dormitory' ? 'Beds' : 'Beds'} Available`;
       availableRoomsList.appendChild(listItem);
     });
 

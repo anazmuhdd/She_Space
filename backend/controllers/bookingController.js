@@ -107,7 +107,7 @@ async function bookRoom(req, res) {
       user_id: userId,        // Ensure user_id is correctly referenced
       room_ids: roomNumbers.map(room => room.room_id),
       type: r_type,
-      dormitory_id: roomNumbers.map(room => room.dormitory_id),
+      dormitory_ids: roomNumbers.map(room => room.dormitory_id),
       check_in: checkInDate,  // Ensure check_in is passed to the schema
       check_out: checkOutDate, // Ensure check_out is passed to the schema
       status: "Upcoming"       // Set the status to "pending" for now
