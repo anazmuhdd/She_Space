@@ -5,5 +5,5 @@ const { registerUser, loginUser, updateUserProfile ,getUserProfile } = require('
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.put('/updateProfile', updateUserProfile);
-
+router.get('/user/:email', getUserProfile);
 module.exports = router;

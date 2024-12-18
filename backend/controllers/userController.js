@@ -92,8 +92,8 @@ const getUserProfile = async (req, res) => {
 
   try {
     // Find user by email
-    const user = await User.findOne({ email });
-
+    const user = await User.findOne({ 'email': email });
+    console.log("usermail: ",email);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
