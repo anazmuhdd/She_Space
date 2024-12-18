@@ -68,11 +68,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // Update room options based on selected room type
   const roomType = document.getElementById("roomType");
   const roomOrBed = document.getElementById("roomOrBed");
-  const rentType = document.getElementById("rentType");
-  const duration = document.getElementById("duration");
 
   roomType.addEventListener("change", () => {
     const selectedRoom = roomType.value;
+    if (selectedRoom !== "selectRoom") {
+      updateRoomOrBedDropdown(selectedRoom);
+    } else {
+      roomOrBed.innerHTML = ""; // Clear options if "Select Room" is chosen
+    }
+  });
+
+  function updateRoomOrBedDropdown(selectedRoom) {
     let availableQuantity = availability[selectedRoom] || 0; // Use the globally defined availability
 
     roomOrBed.innerHTML = ""; // Clear existing options
@@ -83,10 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
       optionElement.textContent = `${i} ${selectedRoom === 'Dormitory' ? 'Bed(s)' : 'Room(s)'}`;
       roomOrBed.appendChild(optionElement);
     }
-  });
-
-  // Trigger Room/Bed and Duration dropdown updates
-  roomType.dispatchEvent(new Event('change'));
+  }
 
   // Populate available rooms in the modal
   function populateAvailableRooms(availability) {
@@ -101,25 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
       listItem.classList.add('list-group-item');
       listItem.textContent = `${type} - ${available} ${type === 'Dormitory' ? 'Beds' : 'Beds'} Available`;
       availableRoomsList.appendChild(listItem);
-    });
-
-    // Dynamically update the roomOrBed dropdown based on the availability
-    const roomTypeSelect = document.getElementById("roomType");
-    const roomOrBedSelect = document.getElementById("roomOrBed");
-
-    roomTypeSelect.addEventListener("change", () => {
-      const selectedRoom = roomTypeSelect.value;
-      let availableQuantity = availability[selectedRoom] || 0;
-
-      roomOrBedSelect.innerHTML = ""; // Clear existing options
-
-      // Populate roomOrBed select box based on availability
-      for (let i = 1; i <= availableQuantity; i++) {
-        const optionElement = document.createElement("option");
-        optionElement.value = i;
-        optionElement.textContent = `${i} ${selectedRoom === 'Dormitory' ? 'Bed(s)' : 'Bed(s)'}`;
-        roomOrBedSelect.appendChild(optionElement);
-      }
     });
   }
 
@@ -174,15 +158,10 @@ document.addEventListener('DOMContentLoaded', () => {
           .map(room => `Room Number: ${room.dormitory_id}, Bed Number: ${room.room_id}`)
           .join('<br>');
 
-        const remainingRoomsList = Object.entries(availability).map(([roomType, available]) => {
-          return `<li>${roomType} - ${available} Beds Available</li>`;
-        }).join('');
-
         document.getElementById("bookingId").innerText = bookingId;
         document.getElementById("checkInDetails").innerText = checkInDate;
         document.getElementById("checkOutDetails").innerText = checkOutDate;
         document.getElementById("bookedRoomsList").innerHTML = bookedRoomsDetails;
-        //document.getElementById("remainingRoomsList").innerHTML = remainingRoomsList;
 
         const successModal = new bootstrap.Modal(document.getElementById('bookingSuccessModal'));
         successModal.show();
