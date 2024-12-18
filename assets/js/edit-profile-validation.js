@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const email = localStorage.getItem('email'); // Retrieve user email from localStorage
-    const response = await fetch(`http://localhost:5000/api/user/${email}`);
+    const response = await fetch(`/api/user/${email}`);
     const userData = await response.json();
 
     if (response.ok) {
@@ -41,7 +41,7 @@ async function updateProfile(event) {
   try {
     const authToken = localStorage.getItem('authToken');
     
-    const response = await fetch('http://localhost:5000/api/updateProfile', {
+    const response = await fetch('/api/updateProfile', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

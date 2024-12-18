@@ -29,7 +29,7 @@ document.querySelector("#login-form").addEventListener("submit", async function 
   }
 
   try {
-    const response = await fetch("http://localhost:5000/api/login", {
+    const response = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -44,7 +44,7 @@ document.querySelector("#login-form").addEventListener("submit", async function 
       showMessage(data.message);
       setTimeout(() => {
         window.location.href = "/dashboard";  // Redirect to /dashboard after login
-      }, 5000); // Redirect after 2 seconds
+      }, 2000); // Redirect after 2 seconds
     } else {
       showMessage(data.message);
     }
