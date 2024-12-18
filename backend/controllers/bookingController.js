@@ -163,15 +163,13 @@ async function getUserBookings(req, res) {
       const pastBookings = await Bookings.find({
           user_id: userId,
           status: "Upcoming",
-          check_out: { $lt: new Date() },
-          status: { $ne: "Cancelled" }
+          check_out: { $lt: new Date() }
       });
 
       const existingBookings = await Bookings.find({
           user_id: userId,
           status: "Upcoming",
-          check_in: { $gte: new Date() },
-          status: { $ne: "Cancelled" }
+          check_in: { $gte: new Date() }
       });
 
       const cancelledBookings = await Bookings.find({
