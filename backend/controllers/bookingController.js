@@ -160,11 +160,7 @@ async function getUserBookings(req, res) {
   try {
       // Fetch bookings grouped by their status
       console.log(userId);
-      const pastBookings = await Bookings.find({
-          user_id: userId,
-          status: "Upcoming",
-          check_out: { $lt: new Date() }
-      });
+      const pastBookings = await Bookings.find({'user_id': userId});
 
       const existingBookings = await Bookings.find({
           user_id: userId,
