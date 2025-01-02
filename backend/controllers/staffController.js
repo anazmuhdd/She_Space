@@ -1,5 +1,5 @@
 const Staff = require('../models/staff');
-const Bookings = require('../models/booking');
+const Booking = require('../models/booking');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 
@@ -9,7 +9,7 @@ exports.loginStaff = async (req, res) => {
 
     try {
         // Check if the staff exists
-        const staff = await Staff.findOne({ email });
+        const staff = await Staff.findOne({ where: { email } });
         if (!staff) {
             return res.status(404).json({ message: 'Staff not found' });
         }
@@ -21,12 +21,11 @@ exports.loginStaff = async (req, res) => {
         }
         
         // If login is successful
-        res.status(200).json({ message: 'Login successful', staff: { _id: staff._id, id: staff.id, name: staff.name, role: staff.role } });
+        res.status(200).json({ message: 'Login successful', staff: { id: staff.id, name: staff.name, role: staff.role } });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
-
 
 // Staff Registration (For admin use or testing)
 exports.registerStaff = async (req, res) => {
@@ -37,16 +36,15 @@ exports.registerStaff = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create new staff with hashed password
-        const newStaff = new Staff({ id, name, email, password: hashedPassword, role });
-        await newStaff.save();
+        const newStaff = await Staff.create({ id, name, email, password: hashedPassword, role });
         res.status(201).json({ message: 'Staff registered successfully', staff: { id: newStaff.id, name: newStaff.name, role: newStaff.role } });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
+
 // Controller for Today's Bookings
 // Get Today's Bookings
-// Get Today's Bookings (POST)
 exports.getTodaysBookings = async (req, res) => {
     try {
         const today = new Date();
@@ -55,10 +53,16 @@ exports.getTodaysBookings = async (req, res) => {
         tomorrow.setDate(tomorrow.getDate() + 1);
         
         // Fetch bookings for the current day
-        const bookings = await Bookings.find({
-            check_in: { $lt: tomorrow },
-            check_out: { $gte: today },
-        }).populate('user_id', 'name phone email');
+        const bookings = await Booking.findAll({
+            where: {
+                check_in: { [Sequelize.Op.lt]: tomorrow },
+                check_out: { [Sequelize.Op.gte]: today }
+            },
+            include: {
+                model: User,
+                attributes: ['name', 'phone', 'email']
+            }
+        });
 
         if (!bookings.length) {
             return res.status(404).json({ success: false, message: 'No bookings found for today' });
@@ -66,31 +70,26 @@ exports.getTodaysBookings = async (req, res) => {
 
         // Format the bookings
         const formattedBookings = bookings.map((booking) => {
-            const { user_id, dormitory_ids, room_ids, type } = booking;
-
-            if (!user_id) {
-                return null; // Skip if user is not populated
-            }
+            const { user, dormitory_ids, room_ids, type } = booking;
 
             return {
                 booking_id: booking.booking_id,
-                user_id: user_id._id,
-                name: user_id.name,
-                phone: user_id.phone,
-                email: user_id.email,
+                user_id: user.id,
+                name: user.name,
+                phone: user.phone,
+                email: user.email,
                 dormitory_ids,
                 room_ids,
                 number_of_beds: Array.isArray(room_ids) ? room_ids.length : 0, // Check if array
                 type,
             };
-        }).filter(Boolean); // Remove null entries
+        });
 
         res.status(200).json({ success: true, bookings: formattedBookings });
     } catch (error) {
         res.status(500).json({ message: 'Error fetching today\'s bookings', error: error.message });
     }
 };
-
 
 // Get Bookings for a Specific Date
 exports.getBookingsForDate = async (req, res) => {
@@ -101,20 +100,25 @@ exports.getBookingsForDate = async (req, res) => {
         date.setHours(0, 0, 0, 0);
         const nextDay = new Date(date);
         nextDay.setDate(nextDay.getDate() + 1);
-        console.log("date: ",date);
-        console.log("nextday: ",nextDay);
+
         // Fetch bookings for the selected date
-        const bookings = await Bookings.find({
-            check_in: { $lt: nextDay },
-            check_out: { $gte: date },
-        }).populate('user_id', 'name phone email');
+        const bookings = await Booking.findAll({
+            where: {
+                check_in: { [Sequelize.Op.lt]: nextDay },
+                check_out: { [Sequelize.Op.gte]: date }
+            },
+            include: {
+                model: User,
+                attributes: ['name', 'phone', 'email']
+            }
+        });
 
         const formattedBookings = bookings.map((booking) => ({
             booking_id: booking.booking_id,
-            user_id: booking.user_id._id,
-            name: booking.user_id.name,
-            phone: booking.user_id.phone,
-            email: booking.user_id.email,
+            user_id: booking.user.id,
+            name: booking.user.name,
+            phone: booking.user.phone,
+            email: booking.user.email,
             dormitory_ids: booking.dormitory_ids,
             room_ids: booking.room_ids,
             number_of_rooms: booking.room_ids.length + booking.dormitory_ids.length,
@@ -128,19 +132,16 @@ exports.getBookingsForDate = async (req, res) => {
     }
 };
 
-
-  // Controller for Booking Calendar
 // Controller for User Details
 // Get User Details
-// Get User Details (POST)
 exports.getUserDetails = async (req, res) => {
     try {
         // Fetch all users
-        const users = await User.find();
+        const users = await User.findAll();
 
         // Prepare user details without bookings
         const userDetails = users.map((user) => ({
-            user_id: user._id,
+            user_id: user.id,
             name: user.name,
             phone: user.phone,
             email: user.email,
