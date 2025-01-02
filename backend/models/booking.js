@@ -1,17 +1,43 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db');
 
-const bookingSchema = new mongoose.Schema({
-  booking_id: { type: String, required: true, unique: true },
-  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  room_ids: [{ type: String, }], // Array of room/bed IDs
-  type: { type: String, required: true },
-  dormitory_ids: [{ type: String, }],
-  check_in: { type: Date, required: true },
-  check_out: { type: Date, required: true },
-  status: { type: String, enum: ['Upcoming', 'Completed', 'Cancelled'], default: 'Upcoming' },
-  total_cost: { type: Number },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+const Booking = sequelize.define('Booking', {
+  booking_id: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  room_ids: {
+    type: DataTypes.ARRAY(DataTypes.STRING), // Stores an array of room IDs
+  },
+  type: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  dormitory_ids: {
+    type: DataTypes.ARRAY(DataTypes.STRING), // Stores an array of dormitory IDs
+  },
+  check_in: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  check_out: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  status: {
+    type: DataTypes.ENUM('Upcoming', 'Completed', 'Cancelled'),
+    defaultValue: 'Upcoming',
+  },
+  total_cost: {
+    type: DataTypes.FLOAT,
+  },
+}, {
+  timestamps: true,
 });
 
-module.exports = mongoose.model('Booking', bookingSchema);
+module.exports = Booking;

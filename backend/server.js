@@ -1,18 +1,16 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const connectDB = require('./config/db');
+const { connectDB, sequelize } = require('./config/db');
 const authRoutes = require('./routes/auth');
 const bookingRoutes = require('./routes/booking');
 const staffRoutes = require('./routes/staff');
-const cors = require('cors'); // Import CORS
-const path = require('path'); // Import path for serving static files
-
-
+const cors = require('cors');
+const path = require('path');
 
 // Load environment variables
 dotenv.config();
 
-// Connect to MongoDB
+// Connect to PostgreSQL
 connectDB();
 
 const app = express();
@@ -23,7 +21,7 @@ app.use(express.json());
 // Enable CORS for all origins (or specify origins as needed)
 app.use(cors());
 
-
+// Static file routes
 app.use('/assets', express.static(path.join(__dirname, '..', 'assets')));
 app.get('/shespace', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'html', 'index.html')); 
@@ -49,19 +47,31 @@ app.get('/staff-dashboard', (req, res) => {
 app.get('', (req, res) => {
   res.redirect('/shespace');
 });
+
+// API Routes
 app.use('/api', authRoutes, bookingRoutes, staffRoutes);
+
+// 404 Error handler
 app.use((req, res, next) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-// Error handling middleware for server errors
+// Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: 'Internal server error', error: err.message });
 });
 
-// Start server
+// Sync Sequelize models and start the server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+
+sequelize.sync({ force: false }) // Set to true only if you want to reset the database schema
+  .then(() => {
+    console.log('Database & tables synced');
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Error syncing database:', err);
+  });
