@@ -6,6 +6,7 @@ const Booking = sequelize.define('Booking', {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
+    primaryKey: true
   },
   user_id: {
     type: DataTypes.INTEGER,

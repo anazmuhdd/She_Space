@@ -1,4 +1,8 @@
 const { Sequelize } = require('sequelize');
+require('dotenv').config(); // Ensure .env is loaded here
+
+// Debugging: Log the Postgres URI
+console.log('Postgres URI:', process.env.POSTGRES_URI);
 
 // Create a new Sequelize instance
 const sequelize = new Sequelize(process.env.POSTGRES_URI, {
