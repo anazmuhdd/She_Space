@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const Rooms = require('../models/room');
 const Bookings = require('../models/booking');
 const User = require('../models/User');
@@ -12,20 +13,26 @@ async function checkAvailability(req, res) {
     const checkOutDate = new Date(checkOut);
 
     // Fetch all bookings with status "Upcoming" within the given date range
-    const bookings = await Bookings.find({
-      status: 'Upcoming', // Consider only 'Upcoming' bookings
-      $or: [
-        { check_in: { $lt: checkOutDate, $gte: checkInDate } },
-        { check_out: { $gt: checkInDate, $lte: checkOutDate } },
-        { check_in: { $lte: checkInDate }, check_out: { $gte: checkOutDate } }
-      ]
+    const bookings = await Bookings.findAll({
+      where: {
+        status: 'Upcoming',
+        [Op.or]: [
+          { check_in: { [Op.lt]: checkOutDate, [Op.gte]: checkInDate } },
+          { check_out: { [Op.gt]: checkInDate, [Op.lte]: checkOutDate } },
+          { check_in: { [Op.lte]: checkInDate }, check_out: { [Op.gte]: checkOutDate } }
+        ]
+      }
     });
 
     console.log("bookings: ", bookings);
-
     // Count the booked rooms by type
     const bookedRoomCounts = bookings.reduce((counts, booking) => {
-      const normalizedType = booking.type === 'Non A/C' ? 'NonAC' : booking.type === 'A/C' ? 'AC' : booking.type;
+      const normalizedType =
+        booking.type === 'Non A/C'
+          ? 'NonAC'
+          : booking.type === 'A/C'
+          ? 'AC'
+          : booking.type;
       counts[normalizedType] = (counts[normalizedType] || 0) + (booking.room_ids?.length || 0);
       return counts;
     }, {});
@@ -33,8 +40,7 @@ async function checkAvailability(req, res) {
     console.log("bookedRoomCounts: ", bookedRoomCounts);
 
     // Fetch all rooms
-    const rooms = await Rooms.find();
-    console.log("rooms: ", rooms);
+    const rooms = await Rooms.findAll();
 
     // Initialize availability counters
     const availability = {
@@ -65,7 +71,7 @@ async function checkAvailability(req, res) {
   }
 }
 
-
+// Book a room
 async function bookRoom(req, res) {
   const { userId, r_type, checkInD, checkOut, numRooms } = req.body;
 
@@ -74,27 +80,29 @@ async function bookRoom(req, res) {
     const checkOutDate = new Date(checkOut);
 
     // Fetch bookings with status "Upcoming" within the date range
-    const bookedRooms = await Bookings.find({
-      status: 'Upcoming', // Consider only 'Upcoming' bookings
-      check_in: { $lte: checkOutDate },
-      check_out: { $gte: checkInDate }
-    }).select('room_ids');
-
-    console.log("bookedRooms: ", bookedRooms);
+    const bookedRooms = await Bookings.findAll({
+      where: {
+        status: 'Upcoming',
+        check_in: { [Op.lte]: checkOutDate },
+        check_out: { [Op.gte]: checkInDate }
+      },
+      attributes: ['room_ids']
+    });
 
     // Filter booked room numbers
     const filteredbookedRooms = bookedRooms.length > 0
       ? [...new Set(bookedRooms.flatMap(booking => booking.room_ids))]
       : [];
-    console.log("filteredBookedRooms: ", filteredbookedRooms);
 
     // Find available rooms that are not already booked
-    const availableRooms = await Rooms.find({
-      status: 'Available',
-      type: r_type,
-      room_id: { $nin: filteredbookedRooms }
-    }).select('room_id dormitory_id');
-    console.log("availableRooms: ", availableRooms);
+    const availableRooms = await Rooms.findAll({
+      where: {
+        status: 'Available',
+        type: r_type,
+        room_id: { [Op.notIn]: filteredbookedRooms }
+      },
+      attributes: ['room_id', 'dormitory_id']
+    });
 
     // Generate a unique booking ID
     const bookingId = await generateBookingId();
@@ -104,10 +112,9 @@ async function bookRoom(req, res) {
       room_id: room.room_id,
       dormitory_id: room.dormitory_id
     }));
-    console.log("roomNumbers: ", roomNumbers);
 
     // Create the booking record
-    const newBooking = new Bookings({
+    const newBooking = await Bookings.create({
       booking_id: bookingId,
       user_id: userId,
       room_ids: roomNumbers.map(room => room.room_id),
@@ -117,9 +124,6 @@ async function bookRoom(req, res) {
       check_out: checkOutDate,
       status: "Upcoming"
     });
-    console.log("newBooking: ", newBooking);
-
-    await newBooking.save();
 
     res.status(200).json({
       message: "Booking successful",
@@ -132,12 +136,11 @@ async function bookRoom(req, res) {
   }
 }
 
-
-
+// Generate a new booking ID
 async function generateBookingId() {
   try {
     // Find the latest booking (sorted by createdAt)
-    const lastBooking = await Bookings.findOne().sort({ createdAt: -1 });
+    const lastBooking = await Bookings.findOne({ order: [['createdAt', 'DESC']] });
 
     // If no bookings exist, start from B2000
     let newBookingId = 'B2000';
@@ -153,35 +156,36 @@ async function generateBookingId() {
     throw error;
   }
 }
+
+// Get user bookings
 async function getUserBookings(req, res) {
   const userId = req.params.userId;
-  
 
   try {
-      // Fetch bookings grouped by their status
-      console.log(userId);
-      const pastBookings = await Bookings.find({'user_id': userId});
+    // Fetch bookings grouped by their status
+    const pastBookings = await Bookings.findAll({ where: { user_id: userId } });
 
-      const existingBookings = await Bookings.find({
-          user_id: userId,
-          status: "Upcoming",
-          check_in: { $gte: new Date() }
-      });
+    const existingBookings = await Bookings.findAll({
+      where: {
+        user_id: userId,
+        status: "Upcoming",
+        check_in: { [Op.gte]: new Date() }
+      }
+    });
 
-      const cancelledBookings = await Bookings.find({
-          user_id: userId,
-          status: "Cancelled"
-      });
+    const cancelledBookings = await Bookings.findAll({
+      where: { user_id: userId, status: "Cancelled" }
+    });
 
-      res.status(200).json({
-          success: true,
-          pastBookings,
-          existingBookings,
-          cancelledBookings
-      });
+    res.status(200).json({
+      success: true,
+      pastBookings,
+      existingBookings,
+      cancelledBookings
+    });
   } catch (error) {
-      console.error("Error fetching user bookings:", error);
-      res.status(500).json({ success: false, message: 'Error fetching bookings' });
+    console.error("Error fetching user bookings:", error);
+    res.status(500).json({ success: false, message: 'Error fetching bookings' });
   }
 }
 
@@ -190,21 +194,24 @@ async function cancelBooking(req, res) {
   const { bookingId } = req.body;
 
   try {
-      const booking = await Bookings.findOneAndUpdate(
-          { booking_id: bookingId },
-          { $set: { status: "Cancelled" } },
-          { new: true }
-      );
+    const booking = await Bookings.update(
+      { status: "Cancelled" },
+      { where: { booking_id: bookingId }, returning: true }
+    );
 
-      if (!booking) {
-          return res.status(404).json({ success: false, message: "Booking not found" });
-      }
+    if (!booking[0]) {
+      return res.status(404).json({ success: false, message: "Booking not found" });
+    }
 
-      res.status(200).json({ success: true, message: "Booking cancelled successfully", booking });
+    res.status(200).json({
+      success: true,
+      message: "Booking cancelled successfully",
+      booking: booking[1][0]
+    });
   } catch (error) {
-      console.error("Error cancelling booking:", error);
-      res.status(500).json({ success: false, message: 'Error cancelling booking' });
+    console.error("Error cancelling booking:", error);
+    res.status(500).json({ success: false, message: 'Error cancelling booking' });
   }
 }
 
-module.exports = { checkAvailability, bookRoom ,getUserBookings, cancelBooking};
+module.exports = { checkAvailability, bookRoom, getUserBookings, cancelBooking };
