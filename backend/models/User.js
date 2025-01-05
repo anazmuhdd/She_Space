@@ -1,7 +1,11 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
-
 const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -21,14 +25,16 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-    primaryKey: true
   },
   password: {
     type: DataTypes.STRING,
     allowNull: false,
   },
 }, {
-  timestamps: true, // Automatically adds createdAt and updatedAt fields
+  timestamps: true,
 });
+
+// Only define associations here, after models are created
+
 
 module.exports = User;

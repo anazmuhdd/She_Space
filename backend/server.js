@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const { connectDB, sequelize } = require('./config/db');
+require('./models/association');
 const authRoutes = require('./routes/auth');
 const bookingRoutes = require('./routes/booking');
 const staffRoutes = require('./routes/staff');

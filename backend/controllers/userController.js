@@ -2,21 +2,38 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 
 // User Registration
+// User Registration
 exports.registerUser = async (req, res) => {
     const { name, dob, address, phone, email, password } = req.body;
-
+  
     try {
-        // Hash the password before saving
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Create a new user with hashed password
-        const newUser = await User.create({ name, dob, address, phone, email, password: hashedPassword });
-        res.status(201).json({ message: 'User registered successfully', user: { id: newUser.id, name: newUser.name, email: newUser.email } });
+      // Hash the password before saving
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      // Create a new user with hashed password
+      const newUser = await User.create({
+        name,
+        dob,
+        address,
+        phone,
+        email,
+        password: hashedPassword,
+      });
+  
+      res.status(201).json({
+        message: 'User registered successfully',
+        user: {
+          id: newUser.id, // Now includes the UUID
+          name: newUser.name,
+          email: newUser.email,
+        },
+      });
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message });
+      console.error("Error during user registration:", error);
+      res.status(500).json({ message: 'Server error', error: error.message });
     }
-};
-
+  };
+  
 // User Login
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
@@ -35,7 +52,7 @@ exports.loginUser = async (req, res) => {
         }
 
         // If login is successful
-        res.status(200).json({ message: 'Login successful', user: { id: user.id, name: user.name, email: user.email } });
+        res.status(200).json({ message: 'Login successful', userId: user.id, username: user.name, useremail: user.email });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
     }

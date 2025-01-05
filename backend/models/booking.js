@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
-
+const User = require('./User');
 const Booking = sequelize.define('Booking', {
   booking_id: {
     type: DataTypes.STRING,
@@ -9,18 +9,22 @@ const Booking = sequelize.define('Booking', {
     primaryKey: true
   },
   user_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     allowNull: false,
+    references: {
+      model: 'Users', // Refers to the Users table
+      key: 'id',
+    },
   },
   room_ids: {
-    type: DataTypes.ARRAY(DataTypes.STRING), // Stores an array of room IDs
+    type: DataTypes.ARRAY(DataTypes.STRING),
   },
   type: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   dormitory_ids: {
-    type: DataTypes.ARRAY(DataTypes.STRING), // Stores an array of dormitory IDs
+    type: DataTypes.ARRAY(DataTypes.STRING),
   },
   check_in: {
     type: DataTypes.DATE,
@@ -40,5 +44,8 @@ const Booking = sequelize.define('Booking', {
 }, {
   timestamps: true,
 });
+
+// Only define associations here, after models are created
+Booking.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
 module.exports = Booking;

@@ -12,6 +12,8 @@ async function checkAvailability(req, res) {
     const checkInDate = new Date(checkIn);
     const checkOutDate = new Date(checkOut);
 
+    console.log("Request received with dates:", { checkIn, checkOut });
+
     // Fetch all bookings with status "Upcoming" within the given date range
     const bookings = await Bookings.findAll({
       where: {
@@ -24,7 +26,8 @@ async function checkAvailability(req, res) {
       }
     });
 
-    console.log("bookings: ", bookings);
+    console.log("Bookings fetched:", JSON.stringify(bookings, null, 2));
+
     // Count the booked rooms by type
     const bookedRoomCounts = bookings.reduce((counts, booking) => {
       const normalizedType =
@@ -37,10 +40,12 @@ async function checkAvailability(req, res) {
       return counts;
     }, {});
 
-    console.log("bookedRoomCounts: ", bookedRoomCounts);
+    console.log("Booked Room Counts:", JSON.stringify(bookedRoomCounts, null, 2));
 
     // Fetch all rooms
     const rooms = await Rooms.findAll();
+
+    console.log("Rooms fetched:", JSON.stringify(rooms, null, 2));
 
     // Initialize availability counters
     const availability = {
@@ -58,18 +63,23 @@ async function checkAvailability(req, res) {
       }
     });
 
+    console.log("Initial Availability:", JSON.stringify(availability, null, 2));
+
     // Subtract booked rooms from available rooms
     availability.Dormitory -= bookedRoomCounts.Dormitory || 0;
     availability.NonAC -= bookedRoomCounts.NonAC || 0;
     availability.AC -= bookedRoomCounts.AC || 0;
 
+    console.log("Final Availability:", JSON.stringify(availability, null, 2));
+
     // Return availability information
     res.status(200).json({ success: true, availability });
   } catch (error) {
-    console.error(error);
+    console.error("Error during availability check:", error);
     res.status(500).json({ success: false, message: 'Error checking availability' });
   }
 }
+
 
 // Book a room
 async function bookRoom(req, res) {
@@ -78,6 +88,14 @@ async function bookRoom(req, res) {
   try {
     const checkInDate = new Date(checkInD);
     const checkOutDate = new Date(checkOut);
+
+    console.log("Request received with data:", {
+      userId,
+      r_type,
+      checkInDate,
+      checkOutDate,
+      numRooms
+    });
 
     // Fetch bookings with status "Upcoming" within the date range
     const bookedRooms = await Bookings.findAll({
@@ -89,10 +107,14 @@ async function bookRoom(req, res) {
       attributes: ['room_ids']
     });
 
+    console.log("Booked rooms fetched:", JSON.stringify(bookedRooms, null, 2));
+
     // Filter booked room numbers
     const filteredbookedRooms = bookedRooms.length > 0
       ? [...new Set(bookedRooms.flatMap(booking => booking.room_ids))]
       : [];
+    
+    console.log("Filtered booked room IDs:", filteredbookedRooms);
 
     // Find available rooms that are not already booked
     const availableRooms = await Rooms.findAll({
@@ -104,14 +126,19 @@ async function bookRoom(req, res) {
       attributes: ['room_id', 'dormitory_id']
     });
 
+    console.log("Available rooms fetched:", JSON.stringify(availableRooms, null, 2));
+
     // Generate a unique booking ID
     const bookingId = await generateBookingId();
+    console.log("Generated booking ID:", bookingId);
 
     // Select rooms to book
     const roomNumbers = availableRooms.slice(0, numRooms).map(room => ({
       room_id: room.room_id,
       dormitory_id: room.dormitory_id
     }));
+
+    console.log("Selected rooms for booking:", roomNumbers);
 
     // Create the booking record
     const newBooking = await Bookings.create({
@@ -125,13 +152,15 @@ async function bookRoom(req, res) {
       status: "Upcoming"
     });
 
+    console.log("New booking created:", JSON.stringify(newBooking, null, 2));
+
     res.status(200).json({
       message: "Booking successful",
       bookingId,
       rooms: roomNumbers
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error during room booking:", error);
     res.status(500).json({ message: "Internal server error. Please try again." });
   }
 }
@@ -142,6 +171,8 @@ async function generateBookingId() {
     // Find the latest booking (sorted by createdAt)
     const lastBooking = await Bookings.findOne({ order: [['createdAt', 'DESC']] });
 
+    console.log("Last booking record fetched:", JSON.stringify(lastBooking, null, 2));
+
     // If no bookings exist, start from B2000
     let newBookingId = 'B2000';
 
@@ -150,6 +181,7 @@ async function generateBookingId() {
       newBookingId = 'B' + (lastBookingNumber + 1).toString(); // Increment and add 'B' back
     }
 
+    console.log("Generated new booking ID:", newBookingId);
     return newBookingId;
   } catch (error) {
     console.error('Error generating booking ID:', error);
@@ -162,25 +194,39 @@ async function getUserBookings(req, res) {
   const userId = req.params.userId;
 
   try {
-    // Fetch bookings grouped by their status
-    const pastBookings = await Bookings.findAll({ where: { user_id: userId } });
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to the start of the day
 
-    const existingBookings = await Bookings.findAll({
+    // Fetch past bookings (before today and not canceled)
+    const pastBookings = await Bookings.findAll({
       where: {
         user_id: userId,
-        status: "Upcoming",
-        check_in: { [Op.gte]: new Date() }
+        check_out: { [Op.lt]: today },
+        status: { [Op.ne]: 'Cancelled' }
       }
     });
 
+    // Fetch upcoming bookings (from today onwards and not canceled)
+    const upcomingBookings = await Bookings.findAll({
+      where: {
+        user_id: userId,
+        check_in: { [Op.gte]: today },
+        status: 'Upcoming'
+      }
+    });
+
+    // Fetch canceled bookings
     const cancelledBookings = await Bookings.findAll({
-      where: { user_id: userId, status: "Cancelled" }
+      where: { 
+        user_id: userId, 
+        status: 'Cancelled' 
+      }
     });
 
     res.status(200).json({
       success: true,
       pastBookings,
-      existingBookings,
+      upcomingBookings,
       cancelledBookings
     });
   } catch (error) {
@@ -189,27 +235,37 @@ async function getUserBookings(req, res) {
   }
 }
 
-// Cancel a specific booking
+
 async function cancelBooking(req, res) {
   const { bookingId } = req.body;
 
   try {
-    const booking = await Bookings.update(
+    console.log("Received bookingId for cancellation:", bookingId); // Debugging
+    
+    // Update the booking status to "Cancelled"
+    const [affectedRows, updatedBooking] = await Bookings.update(
       { status: "Cancelled" },
       { where: { booking_id: bookingId }, returning: true }
     );
 
-    if (!booking[0]) {
+    // Log affected rows and updated booking details
+    console.log("Number of affected rows:", affectedRows);
+    console.log("Updated booking details:", updatedBooking);
+
+    // Check if the booking was found and updated
+    if (!affectedRows) {
+      console.log("Booking not found for cancellation.");
       return res.status(404).json({ success: false, message: "Booking not found" });
     }
 
+    // Respond with success
     res.status(200).json({
       success: true,
       message: "Booking cancelled successfully",
-      booking: booking[1][0]
+      booking: updatedBooking[0] // Return the updated booking details
     });
   } catch (error) {
-    console.error("Error cancelling booking:", error);
+    console.error("Error cancelling booking:", error); // Log the error
     res.status(500).json({ success: false, message: 'Error cancelling booking' });
   }
 }

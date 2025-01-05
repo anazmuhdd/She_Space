@@ -14,7 +14,7 @@ async function fetchBookings() {
         if (response.ok && data.success) {
             console.log('Bookings fetched:', data);
             populateBookings('pastBookings', data.pastBookings || []);
-            populateBookings('existingBookings', data.existingBookings || [], true);
+            populateBookings('existingBookings', data.upcomingBookings || [], true);
             populateBookings('cancelledBookings', data.cancelledBookings || []);
         } else {
             console.error('Failed to fetch bookings:', data.message);
