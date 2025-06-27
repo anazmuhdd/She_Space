@@ -1,6 +1,6 @@
 # She Space
 
-This repository contains the code for [Project Name], a [brief description of the project]. Follow the instructions below to set up the environment, install required packages, and run the server.
+This repository contains the code for She Space, a [brief description of the project]. Follow the instructions below to set up the environment, install required packages, and run the server.
 
 ## Prerequisites
 
