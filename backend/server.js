@@ -7,6 +7,7 @@ const bookingRoutes = require("./routes/booking");
 const staffRoutes = require("./routes/staff");
 const cors = require("cors");
 const path = require("path");
+const serverless = require("serverless-http");
 
 // Load environment variables
 dotenv.config();
@@ -16,16 +17,16 @@ connectDB();
 
 const app = express();
 
-// Middleware to parse JSON
+// Middleware
 app.use(express.json());
-
-// Enable CORS for all origins (or specify origins as needed)
 app.use(cors());
 
-// Static file routes
+// Static assets
 app.use("/assets", express.static(path.join(__dirname, "..", "public/assets")));
+
+// Static HTML routes
 app.get("/shespace", (req, res) => {
-  res.sendFile(path.join(__dirname, "..public/index.html"));
+  res.sendFile(path.join(__dirname, "..", "public/index.html"));
 });
 app.get("/create-account", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public/create-account.html"));
@@ -52,12 +53,12 @@ app.get("", (req, res) => {
 // API Routes
 app.use("/api", authRoutes, bookingRoutes, staffRoutes);
 
-// 404 Error handler
+// 404 Handler
 app.use((req, res, next) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-// Global error handler
+// Global Error Handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res
@@ -65,17 +66,11 @@ app.use((err, req, res, next) => {
     .json({ message: "Internal server error", error: err.message });
 });
 
-// Sync Sequelize models and start the server
-const PORT = process.env.PORT || 5000;
-
+// Sync Sequelize (runs on first invocation)
 sequelize
-  .sync({ force: false }) // Set to true only if you want to reset the database schema
-  .then(() => {
-    console.log("Database & tables synced");
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error("Error syncing database:", err);
-  });
+  .sync({ force: false })
+  .then(() => console.log("Database & tables synced"))
+  .catch((err) => console.error("Error syncing database:", err));
+
+// ❌ REMOVE app.listen — serverless functions don’t need it
+module.exports = serverless(app);
