@@ -17,39 +17,49 @@ function showMessage(message) {
   };
 }
 
-document.querySelector("#login-form").addEventListener("submit", async function (e) {
-  e.preventDefault();
+document
+  .querySelector("#login-form")
+  .addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-  const email = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+    const email = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const loader = document.getElementById("loading-spinner");
 
-  if (!email || !password) {
-    showMessage("Please fill in both fields!");
-    return;
-  }
-
-  try {
-    const response = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      localStorage.setItem('email', email);
-      localStorage.setItem('userId', data.userId);
-      console.log("User ID (ObjectId):", localStorage.userId);
-      showMessage(data.message);
-      setTimeout(() => {
-        window.location.href = "/dashboard";  // Redirect to /dashboard after login
-      }, 2000); // Redirect after 2 seconds
-    } else {
-      showMessage(data.message);
+    if (!email || !password) {
+      showMessage("Please fill in both fields!");
+      return;
     }
-  } catch (error) {
-    console.error("Error during login:", error);
-    showMessage("An error occurred. Please try again later.");
-  }
-});
+
+    try {
+      // Show loading spinner
+      loader.style.display = "flex";
+
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      // Hide loader once response comes
+      loader.style.display = "none";
+
+      if (response.ok) {
+        localStorage.setItem("email", email);
+        localStorage.setItem("userId", data.userId);
+        console.log("User ID (ObjectId):", localStorage.userId);
+        showMessage(data.message);
+        setTimeout(() => {
+          window.location.href = "/dashboard";
+        }, 2000);
+      } else {
+        showMessage(data.message);
+      }
+    } catch (error) {
+      loader.style.display = "none"; // Hide loader if error
+      console.error("Error during login:", error);
+      showMessage("An error occurred. Please try again later.");
+    }
+  });

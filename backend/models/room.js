@@ -1,31 +1,35 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/db');
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../config/db");
 
-const Room = sequelize.define('Room', {
-  room_id: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-    primaryKey: true
+const Room = sequelize.define(
+  "Room",
+  {
+    room_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      primaryKey: true,
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    dormitory_id: {
+      type: DataTypes.STRING,
+      defaultValue: null,
+    },
+    status: {
+      type: DataTypes.ENUM("Available", "Closed"),
+      defaultValue: "Available",
+    },
+    rent_rate: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
   },
-  type: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  dormitory_id: {
-    type: DataTypes.STRING,
-    defaultValue: null,
-  },
-  status: {
-    type: DataTypes.ENUM('Available', 'Closed'),
-    defaultValue: 'Available',
-  },
-  rent_rate: {
-    type: DataTypes.FLOAT,
-    allowNull: false,
-  },
-}, {
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  }
+);
 
 module.exports = Room;
