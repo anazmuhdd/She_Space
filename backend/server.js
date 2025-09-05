@@ -25,25 +25,25 @@ app.use(cors());
 // Static file routes
 app.use("/assets", express.static(path.join(__dirname, "..", "public/assets")));
 app.get("/shespace", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "index.html"));
+  res.sendFile(path.join(__dirname, "..public/index.html"));
 });
 app.get("/create-account", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "create-account.html"));
+  res.sendFile(path.join(__dirname, "..", "public/create-account.html"));
 });
 app.get("/dashboard", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "post-login.html"));
+  res.sendFile(path.join(__dirname, "..", "public/post-login.html"));
 });
 app.get("/edit-profile", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "edit-profile.html"));
+  res.sendFile(path.join(__dirname, "..", "public/edit-profile.html"));
 });
 app.get("/staff-login", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "staff-login.html"));
+  res.sendFile(path.join(__dirname, "..", "public/staff-login.html"));
 });
 app.get("/userviewbookings", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "view-bookings.html"));
+  res.sendFile(path.join(__dirname, "..", "public/view-bookings.html"));
 });
 app.get("/staff-dashboard", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "staff-post-login.html"));
+  res.sendFile(path.join(__dirname, "..", "public/staff-post-login.html"));
 });
 app.get("", (req, res) => {
   res.redirect("/shespace");
